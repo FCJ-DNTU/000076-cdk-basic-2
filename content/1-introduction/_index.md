@@ -15,7 +15,7 @@ We will reuse the workspace that has been created in the CDK Basic part to perfo
 - Create nested stack using CDKHere is the architecture that we would build:
 
 Here is the architecture that we would build:
-![CDKAdvanceArcg](/images/1-introduction/CDKAdvanceArch.png)
+![CDKAdvanceArcg](./images/1-introduction/CDKAdvanceArch.png)
 
 #### Content
 
