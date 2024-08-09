@@ -1,11 +1,10 @@
 +++
-title = "CDK Basic - 2"
+title = "Introduction"
 date = 2024
 weight = 1
 chapter = false
+pre = "<b>1. </b>"
 +++
-
-# CDK Basic - 2
 
 #### Overview
 It is recommended that before doing the CDK Basic 2 Workshop, you should go through the [CDK Basic Workshop](https://000038.awsstudygroup.com/) to learn about CDK. You should have a little bit of knowledge about API Gateway, Elastic Load Balancer, Elastic Container Service, and Lambda.
@@ -26,4 +25,3 @@ Here is the architecture that we would build:
 4. [Lambda and S3](4-verify-new-account/)
 5. [Nested stack](4-verify-new-account/)
 6. [Clean up](4-verify-new-account/)
-<!-- need to remove parenthesis for path in Hugo 0.88.1 for Windows-->
