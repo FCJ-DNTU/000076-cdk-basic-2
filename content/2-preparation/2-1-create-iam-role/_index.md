@@ -10,37 +10,37 @@ pre = "<b>2.1 </b>"
 
 1. Access the [AWS Management Console](https://aws.amazon.com/console/)
 
-   - Find **IAM**
-   - Select **IAM**
+  - Find **IAM**
+  - Select **IAM**
 
 IMAGE HERE
 
 2. In the **IAM** interface
 
-   - Select **Roles**
-   - Select **Create role**
+  - Select **Roles**
+  - Select **Create role**
 
 IMAGE HERE
 
 3. In the **Select trusted entity** interface
 
-   - Select **AWS Service**
-   - **Use case**, select EC2
-   - Select **Next**
+  - Select **AWS Service**
+  - **Use case**, select EC2
+  - Select **Next**
 
 IMAGE HERE
 
 4. In the **Create role** interface
 
-   - Find the policy **AdministratorAccess**
-   - Select the policy **AdministratorAccess**
-   - Select **Next**
+  - Find the policy **AdministratorAccess**
+  - Select the policy **AdministratorAccess**
+  - Select **Next**
 
 IMAGE HERE
 
 5. In the **Role details** interface
 
-   - **Role name**, enter `CDK-Role`
+  - **Role name**, enter `CDK-Role`
 
 IMAGE HERE
 
