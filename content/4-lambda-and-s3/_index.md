@@ -9,15 +9,17 @@ pre = "<b>4. </b>"
 #### Lambda and S3
 In this section, we will configure a Lambda function with API Gateway. We will reuse the template of the previous section (API Gateway and ECS)
 
-1. Create the resources directory at the project root
+1. Create the `resources` directory at the project root
 
 ```
 mkdir resources
 ```
 
+![create-resource](/images/4-lambda-and-s3/4.1-create-resource.png)
+
 2. Create the `widget.js` file in the `resources` directory (use to create lambda)
 
-```
+```js
 /* 
 This code uses callbacks to handle asynchronous function responses.
 It currently demonstrates using an async-await pattern. 
@@ -28,50 +30,64 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
 https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/calling-services-asynchronously.html
 https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html 
 */
-const AWS = require('aws-sdk');
-const S3 = new AWS.S3();
-
-const bucketName = process.env.BUCKET;
+const { S3Client, ListObjectsV2Command } = require("@aws-sdk/client-s3");
 
 exports.main = async function(event, context) {
-  try {
-    var method = event.httpMethod;
-    
-    const data = await S3.listObjectsV2({ Bucket: bucketName }).promise();
-        var body = {
-          widgets: data.Contents.map(function(e) { return e.Key })
-        };
-        return {
-          statusCode: 200,
-          headers: {},
-          body: JSON.stringify(body)
-        };
-  } catch(error) {
-    var body = error.stack || JSON.stringify(error, null, 2);
-    return {
-      statusCode: 400,
-        headers: {},
-        body: JSON.stringify(body)
+  var method = event.httpMethod;
+  const bucketName = process.env.BUCKET; // Ensure this is correctly read
+    if (!bucketName) {
+      console.error('No bucket name provided in environment variables.');
+      return {
+        statusCode: 500,
+        body: 'No bucket name provided in environment variables.'
+      };
     }
-  }
+
+    const s3 = new S3Client();
+
+    const params = {
+      Bucket: bucketName
+    };
+
+    try {
+      // Send the ListObjectsV2Command to S3
+      const data = await s3.send(new ListObjectsV2Command(params));
+
+      // Extract object keys if Contents exists
+      const objectKeys = data.Contents ? data.Contents.map(obj => obj.Key) : [];
+
+      // Return a response
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ "objectKeys": objectKeys })
+      };
+    } catch (err) {
+      // Log the detailed error for troubleshooting
+      console.error('Error listing objects:', JSON.stringify(err, null, 2));
+      return {
+        statusCode: 500,
+        body: `Error listing objects: ${err.message}`
+      };
+    }
 }
+
 ```
 
 This lambda function will return the list of objects in a S3 bucket.
 
 3. In `cdk_workshop_02/cdk_workshop_02_stack.py`, declare a S3 bucket
 
-```
+```py
 # Add S3 bucket
 bucket = s3.Bucket(self, "WidgetStore")
 ```
 
-4. Create the lambda function and grant the S3 bucket read and write permissions
+4. Create the **Lambda function** and grant the S3 bucket read and write permissions
 
-```
+```py
 # Add Lambda function
 handler = lambda_.Function(self, "WidgetHandler",
-  runtime=lambda_.Runtime.NODEJS_14_X,
+  runtime=lambda_.Runtime.NODEJS_18_X,
   code=lambda_.Code.from_asset("resources"),
   handler="widget.main",
   environment=dict(BUCKET=bucket.bucket_name)
@@ -81,9 +97,9 @@ handler = lambda_.Function(self, "WidgetHandler",
 bucket.grant_read_write(handler)
 ```
 
-5. Create an API Gateway intergration
+5. Create an **API Gateway** intergration
 
-```
+```py
 # Create intergration
 get_widgets_integration = apigateway.LambdaIntegration(
 	handler,
@@ -91,19 +107,19 @@ get_widgets_integration = apigateway.LambdaIntegration(
 )
 ```
 
-6. Add a new resource and a new method to the API Gateway
+6. Add a new resource and a new method to the **API Gateway**
 
-```
+```py
 # Add resource and method for proxy request
 lambda_proxy = api.root.add_resource("lambda")
 lambda_proxy.add_method("GET", get_widgets_integration)
 ```
 
-7. Don’t forget to import the needed libraries to use Lambda, API Gateway and S3.
+7. Don’t forget to import the needed libraries to use **Lambda**, **API Gateway** and **S3**.
 
 After importing, recheck your `cdk_workshop_02/cdk_workshop_02_stack.py` file.
 
-```
+```py
 from aws_cdk import (
     Stack,
     aws_ecs as ecs,
@@ -145,7 +161,7 @@ class CdkWorkshop02Stack(Stack):
         
         # Add Lambda function
         handler = lambda_.Function(self, "WidgetHandler",
-        		runtime=lambda_.Runtime.NODEJS_14_X,
+        		runtime=lambda_.Runtime.NODEJS_18_X,
             code=lambda_.Code.from_asset("resources"),
             handler="widget.main",
             environment=dict(BUCKET=bucket.bucket_name)
@@ -172,18 +188,22 @@ class CdkWorkshop02Stack(Stack):
 cdk deploy
 ```
 
-IMAGE HERE
+![deploy-done](/images/4-lambda-and-s3/4.2-deploy-done.png)
 
-9. Deploy the stack
+9. Upload file to **S3 Bucket**
 
 Access the API Gateway endpoint, and add the path `/labmda`. You will see the result returned from the Lambda function.
 
 To verify that the Lambda function is working properly, access the S3 Console. Access the newly created bucket and upload a random file.
 
-IMAGE HERE
+![open-s3](/images/4-lambda-and-s3/4.3-open-s3.png)
+![upload-file](/images/4-lambda-and-s3/4.4-upload-file.png)
+![confirm-upload](/images/4-lambda-and-s3/4.5-confirm-upload.png)
+
+10. Check result
 
 Access the endponit to the Lambda function `xxxxxxx.execute-api.[REGION].amazonaws.com/prod/lambda` of the API Gateway. You will see the new file name being displayed.
 
-IMAGE HERE
+![check-result](/images/4-lambda-and-s3/4.6-check-result.png)
 
 If you have reached this part, congratulations on finishing the second part of the CDK Advance Workshop. In the next section, we will refractor the project by splitting the components in the file `cdk_workshop_02/cdk_workshop_02_stack.py` into different files, and use nested stack to deploy the architecture.

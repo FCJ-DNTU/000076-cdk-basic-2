@@ -6,17 +6,26 @@ chapter = false
 pre = "<b>5.1 </b>"
 +++
 
+{{% notice note %}}
+To create a maintainable, reusable and readable codebase of CDK, we can split the definition of stack in `cdk_workshop_02_stack.py` into multiple file and include in a main file to deploy stack.
+{{% /notice %}}
+
 #### Create nested stacks with CDK
 
-1. Firstly, create a `cdk_workshop_02/main_stack.py` file for the root stack.
+1. Firstly, create `cdk_workshop_02/main_stack.py` files for the root stack.
 
 ```
 touch cdk_workshop_02/main_stack.py
+touch cdk_workshop_02/lb_fargate_stack.py
+touch cdk_workshop_02/lambda_stack.py.py
+touch cdk_workshop_02/api_gateway_stack.py.py
 ```
 
-2. Declare a nested stack for ECS Fargate + Application Load Balancer with the file `cdk_workshop_02/lb_fargate_stack.py`
+![create-stack-definition-files](/images/5-nested-stack/5.1-create-stack-definition-files.png)
 
-```
+2. Declare a nested stack for **ECS Fargate** + **Application Load Balancer** with the file `cdk_workshop_02/lb_fargate_stack.py`
+
+```py
 from aws_cdk import (
     NestedStack,
     aws_ecs as ecs,
@@ -31,12 +40,12 @@ class LBFargateStack(NestedStack):
 
         # Declare a Load Balancer Fargate 
         lb_fargate_service = ecsp.ApplicationLoadBalancedFargateService(
-          self, 
-          "MyWebServer",
-          task_image_options=ecsp.ApplicationLoadBalancedTaskImageOptions(
-              image=ecs.ContainerImage.from_registry("nginxdemos/hello")),
-          public_load_balancer=True,
-          desired_count=3
+            self, 
+            "MyWebServer",
+            task_image_options=ecsp.ApplicationLoadBalancedTaskImageOptions(
+                image=ecs.ContainerImage.from_registry("nginxdemos/hello")),
+            public_load_balancer=True,
+            desired_count=3
         )
         
         self.lb = lb_fargate_service.load_balancer
@@ -44,7 +53,7 @@ class LBFargateStack(NestedStack):
 
 3. Create a nested stack for **Lambda** in `cdk_workshop_02/lambda_stack.py`.
 
-```
+```py
 from aws_cdk import (
     NestedStack,
     aws_s3 as s3,
@@ -62,7 +71,7 @@ class LambdaStack(NestedStack):
         
         # Add Lambda function
         handler = lambda_.Function(self, "WidgetHandler",
-                    runtime=lambda_.Runtime.NODEJS_14_X,
+                    runtime=lambda_.Runtime.NODEJS_18_X,
                     code=lambda_.Code.from_asset("resources"),
                     handler="widget.main",
                     environment=dict(
@@ -77,7 +86,7 @@ class LambdaStack(NestedStack):
 
 4. Create a nested stack for **API Gateway** at `cdk_workshop_02/api_gateway_stack.py`.
 
-```
+```py
 from aws_cdk import (
     NestedStack,
     aws_apigateway as apigateway,
@@ -111,7 +120,7 @@ class APIGatewayStack(NestedStack):
 
 5. Put everything together in the root stack at `cdk_workshop_02/main_stack.py`.
 
-```
+```py
 from aws_cdk import (
     Stack,
     aws_apigateway as apigateway,
@@ -144,7 +153,7 @@ class MainStack(Stack):
 
 6. Change the code in `app.py` to use our new template.
 
-```
+```py
 #!/usr/bin/env python3
 import os
 
@@ -166,15 +175,20 @@ app.synth()
 cdk deploy
 ```
 
-IMAGE HERE
+![deploy-done](/images/5-nested-stack/5.2-deploy-done.png)
 
 After deploying successfully, you can see the newly created stacks in the AWS **CloudFormation** Console.
 
-IMAGE HERE
+![check-main-stack](/images/5-nested-stack/5.3-check-main-stack.png)
 
 You can try the **API Gateway** endpoint for **Lambda** and **ECS** like in the previous section.
 
-IMAGE HERE
+![check-ecs](/images/5-nested-stack/5.5-check-ecs.png)
+
+Upload files to **S3** for testing
+
+![upload-files](/images/5-nested-stack/5.4-upload-files.png)
+![check-lambda-s3](/images/5-nested-stack/5.6-check-lambda-s3.png)
 
 {{% notice note %}}
 Changing the code inside the `app.py` file will create a new **CloudFormation** template. In this advance workshop, each **Cloudformation** stack needs 2 elastic IPs to function properly. When deploying a stack, if the number of Elastic IPs exceeds the limitation of your account (default is 5), the **CloudFormation** stack may not initiate and get stuck at the IN_PROGRESS state. Make sure that you release all the unneeded Elastic IPs when performing this workshop.
