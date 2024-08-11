@@ -13,14 +13,14 @@ pre = "<b>2.1 </b>"
   - Find **IAM**
   - Select **IAM**
 
-IMAGE HERE
+![find-iam](/images/2-prepartion/2.1-find-iam.png)
 
 2. In the **IAM** interface
 
   - Select **Roles**
   - Select **Create role**
 
-IMAGE HERE
+![choose-role](/images/2-prepartion/2.2-choose-role.png)
 
 3. In the **Select trusted entity** interface
 
@@ -28,7 +28,7 @@ IMAGE HERE
   - **Use case**, select EC2
   - Select **Next**
 
-IMAGE HERE
+![choose-role-as-service](/images/2-prepartion/2.3-choose-role-as-service.png)
 
 4. In the **Create role** interface
 
@@ -36,16 +36,16 @@ IMAGE HERE
   - Select the policy **AdministratorAccess**
   - Select **Next**
 
-IMAGE HERE
+![give-admin-access](/images/2-prepartion/2.4-give-admin-access.png)
 
 5. In the **Role details** interface
 
   - **Role name**, enter `CDK-Role`
 
-IMAGE HERE
+![role-settings](/images/2-prepartion/2.5-role-settings.png)
 
 6. Select **Create role**
 
-IMAGE HERE
+![complete-role](/images/2-prepartion/2.6-complete-role.png)
 
 7. Complete role creation
