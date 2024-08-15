@@ -1,12 +1,12 @@
 +++
-title = "Create workspace"
+title = "Launch an EC2 Instance"
 date = 2024
 weight = 2
 chapter = false
 pre = "<b>2.2 </b>"
 +++
 
-#### Create workspace
+#### Create an EC2 Instance
 
 1. Access the [AWS Management Console](https://aws.amazon.com/console/)
 

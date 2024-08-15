@@ -19,9 +19,9 @@ Here is the architecture that we would build:
 
 #### Content
 
-1. [Introduction](1-create-new-aws-account/)
-2. [Preparation](2-MFA-Setup-For-AWS-User-(root))
-3. [API Gateway and ECS](3-create-admin-user-and-group/)
-4. [Lambda and S3](4-verify-new-account/)
-5. [Nested stack](4-verify-new-account/)
-6. [Clean up](4-verify-new-account/)
+1. [Introduction](/1-introduction)
+2. [Preparation](/2-preparation)
+3. [API Gateway and ECS](/3-ecs-alb-and-api-gateway)
+4. [Lambda and S3](/4-lambda-and-s3)
+5. [Nested stack](/5-nested-stack)
+6. [Clean up](/6-clean-up-resources)
