@@ -11,7 +11,7 @@ pre = "<b>3. </b>"
 1. Access the VSCode Workspace
     - Create a new directory named `cdk-workshop-02`
     - Enter `cdk-workshop-02`
-    - Init new python CDK project
+    - Init new `python` CDK project
 
 ![create-work-folder](/images/3-ecs-alb-and-api-gateway/3.1-create-work-folder.png)
 
@@ -113,10 +113,10 @@ class CdkWorkshop02Stack(Stack):
 
 #### Setup virtual environment for python
 Before we deploy, we must
-  - Install packages in `requirements.txt`
   - Setup a virtual environment in `cdk-workshop-02` directory, because our EC2 instance has 2 versions of python, we have to isolate them to make sure there aren't conflicts between python's packages.
+  - Install packages in `requirements.txt`
 
-7. Install `virtualenv`
+1. Install `virtualenv`
     - Back to `/home/ec2-user`
 
 ```
@@ -182,4 +182,4 @@ To verify that the ALB works properly, hit refresh a couple of times, and you wi
 
 ![check-ecs](/images/3-ecs-alb-and-api-gateway/3.9-check-ecs.png)
 
-If you have reached this state, congratulations on finishing the first part of the CDK Advance Workshop. In the next section, we will use CDK to deploy a Lambda function behind an API Gateway resource.
+If you have reached this state, congratulations on finishing the first part of the CDK basic 2 Workshop. In the next section, we will use CDK to deploy a Lambda function behind an API Gateway resource.

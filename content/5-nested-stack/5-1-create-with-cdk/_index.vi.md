@@ -1,5 +1,5 @@
 +++
-title = "Create nested stacks with CDK"
+title = "Tạo các stack lồng với CDK"
 date = 2024
 weight = 1
 chapter = false
@@ -7,12 +7,12 @@ pre = "<b>5.1 </b>"
 +++
 
 {{% notice note %}}
-To create a maintainable, reusable and readable codebase of CDK, we can split the definition of stack in `cdk_workshop_02_stack.py` into multiple file and include in a main file to deploy stack.
+Để có thể tạo mã nguồn CDK có thể bảo trì, tái sử dụng, dễ đọc hơn thì chúng ta cần phải tách các định nghĩa của stack từ trong tệp `cdk_workshop_02_stack.py` ra thành các file riêng biệt và sẽ gom tất cả lại trong một tệp chính để triển khai lên đám mây.
 {{% /notice %}}
 
-#### Create nested stacks with CDK
+#### Tạo các stack lồng với CDK
 
-1. Firstly, create `cdk_workshop_02/main_stack.py` files for the root stack.
+1. Trước hết, hãy tạo file `cdk_workshop_02/main_stack.py` để chứa root stack
 
 ```
 touch cdk_workshop_02/main_stack.py
@@ -23,7 +23,7 @@ touch cdk_workshop_02/api_gateway_stack.py.py
 
 ![create-stack-definition-files](/images/5-nested-stack/5.1-create-stack-definition-files.png)
 
-2. Declare a nested stack for **ECS Fargate** + **Application Load Balancer** with the file `cdk_workshop_02/lb_fargate_stack.py`
+2. Khởi tạo nested stack cho **ECS Fargate** + **Application Load balancer** với file `cdk_workshop_02/lb_fargate_stack.py`
 
 ```py
 from aws_cdk import (
@@ -51,7 +51,7 @@ class LBFargateStack(NestedStack):
         self.lb = lb_fargate_service.load_balancer
 ```
 
-3. Create a nested stack for **Lambda** in `cdk_workshop_02/lambda_stack.py`.
+3. Khởi tạo nested stack cho **Lambda** với tệp `cdk_workshop_02/lambda_stack.py`.
 
 ```py
 from aws_cdk import (
@@ -84,7 +84,7 @@ class LambdaStack(NestedStack):
         self.handler = handler
 ```
 
-4. Create a nested stack for **API Gateway** at `cdk_workshop_02/api_gateway_stack.py`.
+4. Khởi tạo nested stack cho **API Gateway** với tệp `cdk_workshop_02/api_gateway_stack.py`.
 
 ```py
 from aws_cdk import (
@@ -118,7 +118,7 @@ class APIGatewayStack(NestedStack):
         self.url = api.url
 ```
 
-5. Put everything together in the root stack at `cdk_workshop_02/main_stack.py`.
+5. Lắp ráp lại vào tệp mẫu chính để tạo root stack với tệp `cdk_workshop_02/main_stack.py`.
 
 ```py
 from aws_cdk import (
@@ -151,7 +151,7 @@ class MainStack(Stack):
         CfnOutput(self, "API Gateway URL", value=api_gateway_stack.url)
 ```
 
-6. Change the code in `app.py` to use our new template.
+6. Thay đổi code trong tệp `app.py` để sử dụng template chúng ta mới tạo.
 
 ```py
 #!/usr/bin/env python3
@@ -169,7 +169,7 @@ MainStack(app, "MainStack")
 app.synth()
 ```
 
-7. Deploy!!!
+7. Triển khai!!!
 
 ```
 cdk deploy
@@ -191,5 +191,5 @@ Upload files to **S3** for testing
 ![check-lambda-s3](/images/5-nested-stack/5.6-check-lambda-s3.png)
 
 {{% notice note %}}
-Changing the code inside the `app.py` file will create a new **CloudFormation** template. In this workshop, each **Cloudformation** stack needs 2 elastic IPs to function properly. When deploying a stack, if the number of Elastic IPs exceeds the limitation of your account (default is 5), the **CloudFormation** stack may not initiate and get stuck at the IN_PROGRESS state. Make sure that you release all the unneeded Elastic IPs when performing this workshop.
+Việc thay đổi mã trong tệp `app.py` tương ứng với việc triển khai một CloudFormation template mới. Trong bài lab này, mỗi CloudFormation stack cần 2 elastic IP để hoạt động. Khi triển khai một stack, nếu số lượng elastic IP vượt quá giới hạn của account (mặc định là 5), CloudFormation stack có thể không khởi tạo được và bị kẹt ở trạng thái IN_PROGRESS. Hãy đảm bảo bạn release hết các elastic IP không cần thiết khi làm bài lab này.
 {{% /notice %}}

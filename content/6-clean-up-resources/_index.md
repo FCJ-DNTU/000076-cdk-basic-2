@@ -19,4 +19,4 @@ Or you can destroy it manually
 
 If you have uploaded files into the bucket, it cannot be destroyed by the cdk destroy command. You will need to manually delete all the files inside the bucket, and then delete the bucket.
 
-Congratulations on finishing the CDK Advance Workshop!
+Congratulations on finishing the CDK Basic 2 Workshop!

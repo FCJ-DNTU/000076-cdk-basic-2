@@ -1,33 +1,33 @@
 +++
-title = "Configure VSCode environment"
+title = "Cấu hình môi trường VSCode"
 date = 2024
 weight = 3
 chapter = false
 pre = "<b>2.3 </b>"
 +++
 
-#### Configure VSCode environment
+#### Cấu hình môi trường VSCode
 
-1. Open the Visual Studio Code in your PC
+1. Mở Visual Studio Code trong máy vi tính cá nhân của bạn
 
-    - Select the **Extension** icon or use **Ctrl + Shift + X** to open the **Extension** interface.
-    - Find `Remote SSH`, select **Remote - SSH** and **Remote - SSH: Editing Configuration Files**
-    - Install these extensions.
+    - Chọn biểu tượng **Extension** hoặc dùng tổ hợp phím **Ctrl + Shift + X** để mở giao diện **Extension**.
+    - Tìm `Remote SSH`, chọn **Remote - SSH** và **Remote - SSH: Editing Configuration Files**
+    - Cài các gói mở rộng này vào trong máy.
 
 ![install-ssh-extensions-1](/images/2-prepartion/2.13-install-ssh-extensions-1.png)
 ![install-ssh-extensions-2](/images/2-prepartion/2.13-install-ssh-extensions-2.png)
 
-2. After the installation is complete, open Command Palette with `Ctrl + Shift + P`
+2. Sau khi cài đặt xong, thì mình mở ô nhập lệnh với tổ hợp phím `Ctrl + Shift + P`
 
-    - Find `Remote-SSH: Add New SSH Host`.
-    - Enter `cdk-workspace-ec2`.
-    - Then select **C:\\...\\.ssh\config**, then the configuration file will be opened.
+    - Tìm `Remote-SSH: Add New SSH Host`.
+    - Nhập `cdk-workspace-ec2`.
+    - Sau đó là chọn **C:\\...\\.ssh\config**, và một tệp tin cấu hình được mở lên.
 
 ![add-new-ssh-host](/images/2-prepartion/2.14-add-new-ssh-host.png)
 ![enter-ssh-host](/images/2-prepartion/2.15-enter-ssh-host.png)
 ![open-config](/images/2-prepartion/2.16-open-config.png)
 
-The configuration of SSH Host will have the format like below
+Phần cấu hình của SSH Host có dạng như bên dưới:
 ```
 Host cdk-workspace
   HostName x.x.x.x
@@ -37,45 +37,44 @@ Host cdk-workspace
 
 ![update-file-config](/images/2-prepartion/2.18-update-file-config.png)
 
-3. We'll connect to the host which we've just added
+3. Mình sẽ kết nối tới máy chủ EC2 mà mình vừa tạo hổi này với các cấu hình mới thiết lập
 
-    - Find `Remote-SSH: Connect Current Windows to Host`
-    - Select the host `cdk-workspace`
-    - Select `Linux`
-    - Select `Continue`
+    - Tìm `Remote-SSH: Connect Current Windows to Host`
+    - Chọn máy chủ `cdk-workspace`
+    - Chọn `Linux`
+    - Chọn `Continue`
 
 ![connect-to-host](/images/2-prepartion/2.19-connect-to-host.png)
 ![select-host](/images/2-prepartion/2.20-select-host.png)
 ![select-os](/images/2-prepartion/2.21-select-os.png)
 ![select-continue](/images/2-prepartion/2.22-select-continue.png)
 
-After a few seconds, the connection is established successfully. Now you can open EC2's directories in your VSCode
+Sau một vài giây, thì kết nối đã được thiết lập thành công. 
 
-4. Now, we'll open the root directory
+4. Giờ thì chúng ta có thể mở các thư mục ở trong máy chủ EC2 ở trong VSCode.
 
 ![open-directory](/images/2-prepartion/2.23-open-directory.png)
 ![main-directory](/images/2-prepartion/2.24-main-directory.png)
 
-5. We'll attach IAM Role to EC2 Instance, back to **EC2** console, in **Actions**
+5. Chúng ta sẽ gắn IAM Role đã tạo ở bước trước vào cho máy chủ EC2, trở lại với giao diện **EC2**, trong phần **Actions**
 
-    - Select **Security**
-    - Select **Modify IAM Role**
-    - Select the IAM Role named `CDK-Role` which you created before
+    - Chọn **Security**
+    - Chọn **Modify IAM Role**
+    - Chọn IAM Role tên là `CDK-Role` mà mình đã tạo hồi nãy
 
 ![add-iam-role-to-ec2](/images/2-prepartion/2.25-add-iam-role-to-ec2.png)
 ![update-iam-role](/images/2-prepartion/2.26-update-iam-role.png)
 
-6. Next, copy and Paste the command below into the Terminal of VSCode Workspace to install tools to support text processing on the command line.
-
+6. Tiếp theo, sao chép và dán lệnh dưới đây vào trong phần Terminall của VSCode để cài đặt các công cụ cần thiết cho việc xử lý từ trong command line.
 ```
 sudo yum -y install jq gettext bash-completion moreutils
 ```
 
 ![add-some-utils](/images/2-prepartion/2.27-add-some-utils.png)
 
-7. Install `python 3.9` and `pip`
+7. Cài đặt `python 3.9` và `pip`
 
-Firstly, we need to install these binaries to support python3.9
+Đầu tiên, mình sẽ cần phải cài các tệp nhị phân để hỗ trợ python3.9
 
 ```
 sudo yum install gcc openssl-devel bzip2-devel libffi-devel
@@ -83,7 +82,7 @@ sudo yum install gcc openssl-devel bzip2-devel libffi-devel
 
 ![install-support-bin](/images/2-prepartion/2.28-install-support-bin.png)
 
-Enter `/opt` directory and get `python3.9` compress file
+Vào trong thư mục `/opt` và tải tệp `python3.9` đã được nén
 
 ```
 cd /opt
@@ -91,7 +90,7 @@ wget https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tgz
 sudo tar xzf Python-3.9.16.tgz
 ```
 
-Enter `Python-3.9.16 ` directory and extract the downloaded file, and run configure
+Vào trong thư mục và giải nén tệp `Python-3.9.16` vừa tải về, sau đó tiến hành chạy các cấu hình
 
 ```
 cd Python-3.9.16
@@ -102,18 +101,18 @@ sudo make altinstall
 ![install-pyton-1](/images/2-prepartion/2.29-install-pyton-1.png)
 
 {{% notice note %}}
-AWS CDK needs versions of python >= 3.8
+AWS CDK cần phiên bản của python lớn hơn hoặc bằng 3.8
 {{% /notice %}}
 
 ![install-pyton-2](/images/2-prepartion/2.30-install-python-2.png)
 ![2.31-python-pip-are-installed](/images/2-prepartion/2.31-python-pip-are-installed.png)
 
-8. Similar to CloudFormation, you can install the cfn-lint tool to help you check CDK templates and other information, including auditing. Check if the resource properties are correct or not configured according to best practices or not.
+8. Giống với CloudFormation, mình có thể cài đặt cfn-lint để giúp mình có thể kiểm tra các mẫu CDK và các thông tin khác, bao gồm việc kiểm trả. Kiểm tra xem nếu như các tài nguyên đã được cài hay chưa và có được cài đúng với quy tắc tốt nhất hay không.
 
 ```
 pip install cfn-lint
 ```
-And check the successful installation of cfn-lint using the following command:
+Mình có thể kiểm tra xem cfn-lint đã được cài thành công chưa với lệnh bên dưới:
 ```
 cfn-lint --version
 ```
@@ -121,18 +120,18 @@ cfn-lint --version
 ![install-cfn-lint](/images/2-prepartion/2.32-install-cfn-lint.png)
 ![check-cfn-lint-install](/images/2-prepartion/2.33-check-cfn-lint-install.png)
 
-9. Setup environment variables to let aws cli use the current region
+9. Thiết lập môi biến môi trường và để cho aws cli dùng mã của vùng hiện tại
 
-Before we can get metadata of EC2, we need to modify the instance metadata options
+Trước khi mình có thể dùng thông tin của máy chủ EC2, mình cần phải điều chỉnh lại lựa chọn thông tin của máy chủ
 
 ![modify-instance-metadata-1](/images/2-prepartion/2.33-modify-instance-metadata-1.png)
 ![modify-instance-metadata-2](/images/2-prepartion/2.34-modify-instance-metadata-2.png)
 
-Make sure we can get the EC2 instance's metadata
+Để chắc chắn rằng mình có thể lấy thông tin của máy chủ mình đã tạo hồi nãy
 
 ![check-instance-metadata](/images/2-prepartion/check-instance-metadata.png)
 
-Set up environment variables
+Thiết lập các biến môi trường
 
 ```
 export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
@@ -140,7 +139,7 @@ export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/doc
 export AZS=($(aws ec2 describe-availability-zones --query 'AvailabilityZones[].ZoneName' --output text --region $AWS_REGION))
 ```
 
-Save the configuration information to bash_profile
+Lưu các thông tin đó vào trong bash_profile
 
 ```
 echo "export ACCOUNT_ID=${ACCOUNT_ID}" | tee -a ~/.bash_profile
@@ -154,7 +153,7 @@ aws configure set default.region ${AWS_REGION}
 
 ![setup-env-add-to-bash-profile](/images/2-prepartion/2.35-setup-env-add-to-bash-profile.png)
 
-10.  The CDK isn't installed, we have to install it with NPM. Install NodeJS with NVM
+10. CDK chưa được cài đặt, giờ mình sẽ cài nó với NPM từ NodeJS, trước tiên là cài NVM trước
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -162,7 +161,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
 ![install-nvm](/images/2-prepartion/2.36-install-nvm.png)
 
-11. Install NodeJS and AWS CDK and check if **node** and **npm** are available.
+11. Sau đó là cài NodeJS và cài AWS CDK (thư viện toàn cục) và kiểm tra xem là **node** và **npm** đã có hay chưa
 ```
 nvm install 20
 node -v
@@ -173,7 +172,7 @@ npm install -g aws-cdk
 ![install-nodejs](/images/2-prepartion/2.37-install-nodejs.png)
 ![install-cdk](/images/2-prepartion/2.38-install-cdk.png)
 
-12. We will use the command to check if the EC2 instance is using the IAM Role correctly.
+12. Mình sẽ dùng lệnh dưới đây để kiểm tra xem là máy của EC2 của mình có thể dùng IAM Role mà mình mới gắn từ nãy hay chưa
 ```
 aws sts get-caller-identity --query Arn | grep CDK-Role -q && echo "IAM role valid" || echo "IAM role NOT valid"
 ```

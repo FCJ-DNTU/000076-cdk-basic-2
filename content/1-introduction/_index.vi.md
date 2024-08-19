@@ -1,11 +1,10 @@
 +++
-title = "CDK Cơ bản - 2"
+title = "Giới thiệu"
 date = 2024
 weight = 1
 chapter = false
+pre = "<b>1. </b>"
 +++
-
-# CDK Cơ bản - 2
 
 #### Tổng quan
 Bạn nên thực hành bài workshop CDK Basic 2 trước khi thực hành tiếp bài này, bạn có thể thông qua đường dẫn [CDK Basic Workshop](https://000038.awsstudygroup.com/) để biết thêm về CDK. Bạn cũng nên tìm hiểu qua để có một số kiến thức về API Gateway, Elastic Load Balancer, Elastic Container Service, và Lambda.

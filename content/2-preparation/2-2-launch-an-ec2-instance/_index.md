@@ -49,7 +49,7 @@ You need to launch an EC2 instance for our environment, then connect to this EC2
 
 5. In the **Network settings**
 
-  - Leave everything else default
+  - Leave everything else default, but:
     - Auto-assign public IP is **enable**
     - Allow SSH traffic from **Anywhere** (0.0.0.0/0)
 
